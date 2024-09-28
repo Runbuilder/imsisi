@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스마트 점수판</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <style>
+        .gradient-background {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+    </style>
+</head>
+<body class="gradient-background flex items-center justify-center h-screen">
+    <div class="bg-white bg-opacity-90 p-8 rounded-lg shadow-lg text-center">
+        <h1 class="text-3xl font-bold mb-6 text-blue-600">스마트 점수판</h1>
+        <div class="mb-8">
+            <input type="text" id="teamName" placeholder="팀 이름" class="border p-2 rounded mb-4 w-full">
+            <div id="score" class="text-6xl font-bold mb-4">0</div>
+            <div class="flex justify-center space-x-4">
+                <button id="minusBtn" class="bg-red-500 text-white px-6 py-2 rounded-full text-2xl hover:bg-red-600 transition duration-300">-</button>
+                <button id="plusBtn" class="bg-green-500 text-white px-6 py-2 rounded-full text-2xl hover:bg-green-600 transition duration-300">+</button>
+            </div>
+        </div>
+        <button id="resetBtn" class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 transition duration-300">리셋</button>
+    </div>
+
+    <script>
+        let score = 0;
+        const scoreElement = document.getElementById('score');
+        const teamNameInput = document.getElementById('teamName');
+
+        document.getElementById('plusBtn').addEventListener('click', () => updateScore(1));
+        document.getElementById('minusBtn').addEventListener('click', () => updateScore(-1));
+        document.getElementById('resetBtn').addEventListener('click', resetScore);
+        teamNameInput.addEventListener('input', updateTeamName);
+
+        function updateScore(change) {
+            score += change;
+            scoreElement.textContent = score;
+            animateScore();
+        }
+
+        function resetScore() {
+            score = 0;
+            scoreElement.textContent = score;
+            teamNameInput.value = '';
+            animateScore();
+        }
+
+        function updateTeamName() {
+            const teamName = teamNameInput.value;
+            document.title = teamName ? `${teamName}의 점수판` : '스마트 점수판';
+        }
+
+        function animateScore() {
+            anime({
+                targets: scoreElement,
+                scale: [1.2, 1],
+                duration: 300,
+                easing: 'easeOutQuad'
+            });
+        }
+    </script>
+</body>
+</html>
